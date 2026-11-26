@@ -5,12 +5,11 @@ import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
-
 DATABASE = "amlakan.db"
 
 
 # -----------------------------
-# اتصال به دیتابیس
+# Database
 # -----------------------------
 
 def get_db():
@@ -18,10 +17,6 @@ def get_db():
     connection.row_factory = sqlite3.Row
     return connection
 
-
-# -----------------------------
-# ساخت جدول و اطلاعات نمونه
-# -----------------------------
 
 def init_db():
     db = get_db()
@@ -51,9 +46,7 @@ def init_db():
                 "آپارتمان لوکس و مدرن",
                 "تهران",
                 "۱۲ میلیارد تومان",
-                500,
-                3,
-                "فروش",
+                500, 3, "فروش",
                 "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000",
                 "آپارتمان زیبا با طراحی مدرن، نورگیری عالی و امکانات کامل.",
                 datetime.now().strftime("%Y-%m-%d")
@@ -62,9 +55,7 @@ def init_db():
                 "ویلای مدرن با استخر",
                 "شمال",
                 "۱۸ میلیارد تومان",
-                300,
-                4,
-                "فروش",
+                300, 4, "فروش",
                 "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1000",
                 "ویلای مدرن با محوطه سرسبز، استخر و فضای آرام.",
                 datetime.now().strftime("%Y-%m-%d")
@@ -73,9 +64,7 @@ def init_db():
                 "خانه شیک و دلباز",
                 "اصفهان",
                 "۶۰ میلیون تومان",
-                120,
-                2,
-                "اجاره",
+                120, 2, "اجاره",
                 "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1000",
                 "خانه‌ای دلباز با دسترسی مناسب به امکانات شهری.",
                 datetime.now().strftime("%Y-%m-%d")
@@ -84,7 +73,8 @@ def init_db():
 
         db.executemany("""
             INSERT INTO properties
-            (title, city, price, area, rooms, kind, image, description, created_at)
+            (title, city, price, area, rooms, kind, image,
+             description, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, samples)
 
@@ -96,7 +86,7 @@ init_db()
 
 
 # -----------------------------
-# قالب و طراحی سایت
+# Design
 # -----------------------------
 
 STYLE = """
@@ -136,7 +126,7 @@ a {
 }
 
 header {
-    padding: 18px 0;
+    padding: 15px 0;
     border-bottom: 1px solid #ffffff14;
     background: #080b10dd;
     position: sticky;
@@ -155,14 +145,14 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 23px;
+    gap: 10px;
+    font-size: 21px;
     font-weight: 900;
 }
 
 .logo svg {
-    width: 52px;
-    height: 52px;
+    width: 45px;
+    height: 45px;
 }
 
 .logo-text span {
@@ -172,31 +162,49 @@ header {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 23px;
     color: #d4d8df;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .nav-links a:hover {
     color: var(--gold);
 }
 
-.btn {
-    display: inline-block;
+/* Modern compact buttons */
+
+.btn,
+button,
+a.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     border: none;
-    border-radius: 12px;
-    padding: 12px 20px;
+    border-radius: 9px;
+    padding: 8px 14px;
     background: linear-gradient(135deg, #f4d58d, #bd8c37);
     color: #17120a;
     font-family: inherit;
-    font-weight: 800;
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: .3s;
+    transition: transform .2s ease,
+                box-shadow .2s ease,
+                filter .2s ease;
 }
 
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px #d7a94c35;
+.btn:hover,
+button:hover,
+a.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px #d7a94c30;
+    filter: brightness(1.06);
+}
+
+.btn:active,
+button:active {
+    transform: scale(.97);
 }
 
 .hero {
@@ -220,8 +228,8 @@ header {
 
 .hero p {
     color: #d1d5dc;
-    font-size: 16px;
-    margin-bottom: 30px;
+    font-size: 15px;
+    margin-bottom: 28px;
 }
 
 .search-box {
@@ -229,10 +237,10 @@ header {
     margin: auto;
     background: #ffffff12;
     border: 1px solid #ffffff25;
-    border-radius: 17px;
-    padding: 12px;
+    border-radius: 14px;
+    padding: 9px;
     display: flex;
-    gap: 10px;
+    gap: 9px;
     backdrop-filter: blur(12px);
 }
 
@@ -243,9 +251,9 @@ header {
     border: none;
     outline: none;
     color: white;
-    padding: 12px;
+    padding: 10px;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .search-box input::placeholder {
@@ -256,12 +264,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 45px 0 25px;
+    margin: 42px 0 23px;
     gap: 15px;
 }
 
 .section-title h2 {
-    font-size: 25px;
+    font-size: 23px;
     margin: 0;
 }
 
@@ -272,21 +280,21 @@ header {
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 23px;
+    gap: 21px;
     padding-bottom: 50px;
 }
 
 .card {
     background: var(--card);
     border: 1px solid #ffffff12;
-    border-radius: 18px;
+    border-radius: 16px;
     overflow: hidden;
     transition: .3s;
     display: block;
 }
 
 .card:hover {
-    transform: translateY(-7px);
+    transform: translateY(-5px);
     border-color: var(--gold);
     box-shadow: 0 15px 35px #0005;
 }
@@ -299,42 +307,42 @@ header {
 }
 
 .card-content {
-    padding: 18px;
+    padding: 17px;
 }
 
 .card h3 {
     margin: 0 0 12px;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .muted {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .price {
     color: var(--gold);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 900;
-    margin: 15px 0;
+    margin: 13px 0;
 }
 
 .card-footer {
     border-top: 1px solid #ffffff12;
-    padding-top: 13px;
+    padding-top: 12px;
     display: flex;
     justify-content: space-between;
     color: #c6cbd3;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .form-box {
     max-width: 700px;
-    margin: 50px auto;
-    padding: 30px;
+    margin: 45px auto;
+    padding: 28px;
     background: var(--card);
     border: 1px solid #ffffff18;
-    border-radius: 20px;
+    border-radius: 18px;
 }
 
 .form-box h2 {
@@ -346,23 +354,24 @@ header {
 .form-box textarea,
 .form-box select {
     width: 100%;
-    margin: 9px 0 17px;
-    padding: 14px;
-    border-radius: 10px;
+    margin: 8px 0 15px;
+    padding: 11px;
+    border-radius: 9px;
     border: 1px solid #ffffff20;
     background: #0c111a;
     color: white;
     font-family: inherit;
+    font-size: 13px;
     outline: none;
 }
 
 .form-box label {
-    font-size: 14px;
+    font-size: 13px;
     color: #d9dce2;
 }
 
 .form-box textarea {
-    min-height: 130px;
+    min-height: 120px;
     resize: vertical;
 }
 
@@ -370,7 +379,7 @@ header {
     margin: 40px auto;
     max-width: 1000px;
     background: var(--card);
-    border-radius: 20px;
+    border-radius: 18px;
     overflow: hidden;
     border: 1px solid #ffffff18;
 }
@@ -383,24 +392,24 @@ header {
 }
 
 .detail-content {
-    padding: 30px;
+    padding: 28px;
 }
 
 .detail-content h1 {
-    font-size: 30px;
+    font-size: 28px;
 }
 
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin: 25px 0;
+    gap: 14px;
+    margin: 23px 0;
 }
 
 .info-item {
     background: #ffffff09;
-    padding: 18px;
-    border-radius: 12px;
+    padding: 16px;
+    border-radius: 11px;
 }
 
 .info-item small {
@@ -438,7 +447,7 @@ footer {
     }
 
     .hero {
-        padding: 55px 0;
+        padding: 50px 0;
     }
 
     .search-box {
@@ -446,7 +455,15 @@ footer {
     }
 
     .detail-content {
-        padding: 20px;
+        padding: 19px;
+    }
+
+    .btn,
+    button,
+    a.button {
+        padding: 7px 12px;
+        font-size: 12px;
+        border-radius: 8px;
     }
 }
 </style>
@@ -454,7 +471,7 @@ footer {
 
 
 # -----------------------------
-# هدر مشترک
+# Header
 # -----------------------------
 
 HEADER = """
@@ -519,13 +536,11 @@ HEADER = """
 
 
 # -----------------------------
-# اسکریپت تغییر رنگ لوگو و پس زمینه
+# Scripts
 # -----------------------------
 
 SCRIPTS = """
 <script>
-
-// تغییر رنگ لوگو هر ۵ ثانیه
 
 const logoColors = [
     ["#f5d58c", "#b47d29"],
@@ -540,19 +555,17 @@ const logoColors = [
 let logoIndex = 0;
 
 setInterval(() => {
-
     logoIndex = (logoIndex + 1) % logoColors.length;
 
-    document.getElementById("logoStop1")
-        .setAttribute("stop-color", logoColors[logoIndex][0]);
+    const stop1 = document.getElementById("logoStop1");
+    const stop2 = document.getElementById("logoStop2");
 
-    document.getElementById("logoStop2")
-        .setAttribute("stop-color", logoColors[logoIndex][1]);
-
+    if (stop1 && stop2) {
+        stop1.setAttribute("stop-color", logoColors[logoIndex][0]);
+        stop2.setAttribute("stop-color", logoColors[logoIndex][1]);
+    }
 }, 5000);
 
-
-// تغییر رنگ پس زمینه هر ۳۰ ثانیه
 
 const backgrounds = [
     "#0b0e13",
@@ -566,14 +579,12 @@ const backgrounds = [
 let bgIndex = 0;
 
 setInterval(() => {
-
     bgIndex = (bgIndex + 1) % backgrounds.length;
 
     document.documentElement.style.setProperty(
         "--bg",
         backgrounds[bgIndex]
     );
-
 }, 30000);
 
 </script>
@@ -581,7 +592,7 @@ setInterval(() => {
 
 
 # -----------------------------
-# صفحه اصلی
+# Home page
 # -----------------------------
 
 HOME_HTML = """
@@ -602,9 +613,7 @@ HOME_HTML = """
 
         <h1>خانه رویایی خود را <span>پیدا کنید</span></h1>
 
-        <p>
-            خرید، فروش و اجاره ملک در سراسر ایران
-        </p>
+        <p>خرید، فروش و اجاره ملک در سراسر ایران</p>
 
         <form class="search-box" method="GET" action="/">
 
@@ -694,7 +703,7 @@ HOME_HTML = """
 
 
 # -----------------------------
-# صفحه ثبت آگهی
+# Add property page
 # -----------------------------
 
 ADD_HTML = """
@@ -725,20 +734,16 @@ ADD_HTML = """
                placeholder="مثلاً آپارتمان لوکس در تهران">
 
         <label>شهر</label>
-        <input name="city" required
-               placeholder="مثلاً تهران">
+        <input name="city" required placeholder="مثلاً تهران">
 
         <label>قیمت</label>
-        <input name="price" required
-               placeholder="مثلاً ۸ میلیارد تومان">
+        <input name="price" required placeholder="مثلاً ۸ میلیارد تومان">
 
         <label>متراژ</label>
-        <input name="area" type="number" min="1" required
-               placeholder="مثلاً ۱۵۰">
+        <input name="area" type="number" min="1" required placeholder="مثلاً ۱۵۰">
 
         <label>تعداد اتاق</label>
-        <input name="rooms" type="number" min="0" required
-               placeholder="مثلاً ۳">
+        <input name="rooms" type="number" min="0" required placeholder="مثلاً ۳">
 
         <label>نوع معامله</label>
         <select name="kind" required>
@@ -755,9 +760,7 @@ ADD_HTML = """
         <textarea name="description"
                   placeholder="توضیحات کامل ملک را بنویسید..."></textarea>
 
-        <button class="btn" type="submit">
-            ثبت آگهی
-        </button>
+        <button class="btn" type="submit">ثبت آگهی</button>
 
     </form>
 
@@ -771,7 +774,7 @@ ADD_HTML = """
 
 
 # -----------------------------
-# صفحه جزئیات ملک
+# Property details
 # -----------------------------
 
 DETAIL_HTML = """
@@ -802,9 +805,7 @@ DETAIL_HTML = """
 
             <p class="muted">شهر: {{ p.city }}</p>
 
-            <div class="price">
-                {{ p.price }}
-            </div>
+            <div class="price">{{ p.price }}</div>
 
             <div class="info-grid">
 
@@ -852,7 +853,7 @@ DETAIL_HTML = """
 
 
 # -----------------------------
-# مسیر صفحه اصلی
+# Home route
 # -----------------------------
 
 @app.route("/")
@@ -868,7 +869,6 @@ def home():
             WHERE title LIKE ? OR city LIKE ?
             ORDER BY id DESC
         """, (f"%{query}%", f"%{query}%")).fetchall()
-
     else:
         properties = db.execute("""
             SELECT * FROM properties
@@ -885,7 +885,7 @@ def home():
 
 
 # -----------------------------
-# مسیر ثبت آگهی
+# Add property route
 # -----------------------------
 
 @app.route("/add", methods=["GET", "POST"])
@@ -922,17 +922,12 @@ def add_property():
 
         db.execute("""
             INSERT INTO properties
-            (title, city, price, area, rooms, kind, image, description, created_at)
+            (title, city, price, area, rooms, kind, image,
+             description, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-            title,
-            city,
-            price,
-            area,
-            rooms,
-            kind,
-            image,
-            description,
+            title, city, price, area, rooms, kind,
+            image, description,
             datetime.now().strftime("%Y-%m-%d")
         ))
 
@@ -945,7 +940,7 @@ def add_property():
 
 
 # -----------------------------
-# مسیر جزئیات هر ملک
+# Property detail route
 # -----------------------------
 
 @app.route("/property/<int:property_id>")
@@ -970,8 +965,8 @@ def property_detail(property_id):
 
 
 # -----------------------------
-# اجرای برنامه
+# Run application
 # -----------------------------
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
